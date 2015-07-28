@@ -69,7 +69,15 @@ def update(newid):
     df_isolated_ap = utils.airports[~utils.airports.id.isin(airport['destinations'].id.values)]
     _isolated_aps = create_output(df_isolated_ap)
 
-    return jsonify({"msg": "OK", 'connections': len(airport['destinations'])})
+    ap = airport['airport']
+    ind = ap.index.values[0]
+    dd = {k: v[ind] for k, v in dict(ap).items()}
+
+    return jsonify(
+        {"msg": "OK",
+         'connections': len(airport['destinations']),
+         'airport': dd}
+    )
 
 
 if __name__ == "__main__":

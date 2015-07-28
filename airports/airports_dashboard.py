@@ -28,7 +28,7 @@ all_airports = AjaxDataSource(data_url='http://127.0.0.1:5050/data/all_aps',
                              polling_interval=POLL_TIME)
 
 # create plot object and add all it's objects
-plot = figure(title="Flights", plot_width=1000, plot_height=500,
+plot = figure(title="Flights", plot_width=800, plot_height=500,
               tools="pan,box_zoom,box_select,tap,resize,reset")
 ui.create_airport_map(plot, ap_routes_source, all_airports)
 

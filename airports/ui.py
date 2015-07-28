@@ -5,7 +5,7 @@ from bokeh.models.sources import ColumnDataSource
 from bokeh.models.actions import Callback
 
 
-def create_airport_map(plot, ap_routes, isolated_aps, add_tap = False):
+def create_airport_map(plot, ap_routes, isolated_aps):
     import utils
 
     worldmap = utils.get_worldmap()
@@ -35,7 +35,6 @@ def create_airport_map(plot, ap_routes, isolated_aps, add_tap = False):
     if hover:
         hover.tooltips = OrderedDict([
             ("Name", "@name"),
-            # ("Airport", "@name (@city, @country)"),
         ])
         hover.renderers = [countries_renderer]
 
@@ -62,6 +61,17 @@ def create_airport_map(plot, ap_routes, isolated_aps, add_tap = False):
                 if (details.connections == 0){
                     alert("Sorry, the selected airport have no connections!");
                 }
+
+                // Fill the airport details div with the new airport info
+                $("#info_wrapper").removeClass("hidden");
+                $("#details_panel").html("<h3>"+details.airport.name+"</h3>");
+                $("#details_panel").append("<div>City: " + details.airport.city + "</div>");
+                $("#details_panel").append("<div>Country: " + details.airport.country + "</div>");
+                $("#details_panel").append("<div>Number of Connections: " + details.connections + "</div>");
+                $("#details_panel").append("<div>IATA: " + details.airport.iata + "</div>");
+                $("#details_panel").append("<div>ICAO: " + details.airport.icao + "</div>");
+                $("#details_panel").append("<div>Id: " + details.airport.id + "</div>");
+                $("#details_panel").append("<div>Geolocation: " + details.airport.lng + "," + details.airport.lat + " </div>");
             });
 
         }

@@ -2,69 +2,14 @@
 <html lang="en" xmlns="http://www.w3.org/1999/html">
     <head>
         <meta charset="utf-8">
-        <title>World Airports Dome</title>
+        <title>World Airports Demo</title>
 
+        <link rel="stylesheet" href="/static/{{ theme }}.css" type="text/css" />
+        <script src="/static/jquery-1.10.1.js"></script>
 
-        <!--<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>-->
-
-        <script src="/static/js/jquery-1.10.1.js"></script>
-
-        <script>
-
-
-
-//            // REGISTER LOADING WINDOW FUNCTIONS
-//            $body = $("body");
-//
-//            function check_loaded() {
-//
-//                var loaded = $('.bk-ui-slider')[0].id;
-//                console.log("CHECKING" + window.prev_loaded_flag + '   ' + loaded);
-//
-//                if (loaded!=window.prev_loaded_flag){
-//                    console.log('closing');
-//                    $("body").removeClass("loading");
-//                    window.prev_loaded_flag = loaded;
-//
-//                }else{
-//                    setTimeout(check_loaded, 1000);
-//                }
-//            }
-//
-//
-//            function get_source_by_tag(sourcetag){
-//                var sources = Bokeh.Collections('ColumnDataSource').models;
-//
-//                for (var i=0; i<sources.length; i++){
-//                    var tag = sources[i].get('tags')[0];
-//                    if (tag == sourcetag){
-//                        return sources[i]
-//                    }
-//                }
-//            }
-//
-//            function disableSource(source){
-//                // save the original data so we can restore it when enabling the source again
-//                if (source.get('odata') == undefined){
-//                    source.set('odata', source.get('data'));
-//                }
-//                source.set('data', {});
-//            }
-//
-//            function enableSource(source){
-//                // save the original data so we can restore it when enabling the source again
-//                if (source.get('odata') == undefined){
-//                    source.set('odata', source.get('data'));
-//                }
-//                source.set('data', source.get('odata'));
-//            }
-        </script>
-
-
+    <!-- Define bokeh resources and script -->
     {{ plot_resources|indent(4)|safe }}
-
     {{ plot_script|indent(4)|safe }}
-
 
     </head>
     <body>
@@ -77,8 +22,10 @@
             </div>
         </div>
             <div id="side_bar">
-                <div id="plugins_wrapper">
-                    <div id="details_panel" class="hidden"></div>
+                <div id="info_wrapper">
+                    <div id="details_panel">
+                        <p>Zoom in an area and select an airport to display more information.</p>
+                    </div>
                 </div>
             </div>
 
@@ -92,9 +39,8 @@
 
         <script src="/static/jquery-1.10.1.js"></script>
         <script type="text/javascript">
-
             document.getElementById( 'theme_select' ).onchange = function() {
-                window.open( "http://127.0.0.1:5050/?theme=" + this.options[ this.selectedIndex ].value, '_self');
+                window.open( "http://127.0.0.1:5050/dashboard?theme=" + this.options[ this.selectedIndex ].value, '_self');
             };
         </script>
     </body>
