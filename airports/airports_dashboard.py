@@ -27,10 +27,6 @@ ap_routes_source = AjaxDataSource(data_url='http://localhost:5050/data/ap_routes
 all_airports = AjaxDataSource(data_url='http://127.0.0.1:5050/data/all_aps',
                              polling_interval=POLL_TIME)
 
-# create plot object and add all it's objects
-plot = figure(title="Flights", plot_width=800, plot_height=500,
-              tools="pan,box_zoom,box_select,tap,resize,reset")
-ui.create_airport_map(plot, ap_routes_source, all_airports)
 
 # Let' add a new view to the airport dashboard so we can serve a customized
 # dashboard page and integrate some Frontend functionality
@@ -48,11 +44,15 @@ def newapplet():
         js_files=INLINE.js_files,
         css_files=INLINE.css_files,
     )
+    # create plot object and add all it's objects
+    plot = figure(title="Flights", plot_width=800, plot_height=500,
+                  tools="pan,box_zoom,box_select,tap,resize,reset")
+    ui.create_airport_map(plot, ap_routes_source, all_airports, theme=theme)
 
     # get the js script and html divs for the bokeh objects to place on the
     # html page
     plot_script, extra_divs = components({"main_plot": plot}, INLINE)
-    themes = ["default", "dark"]
+    themes = ["default", "dark", 'creme']
     options = {k: 'selected="selected"' if theme == k else "" for k in themes}
 
     return render_template(

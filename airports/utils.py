@@ -59,7 +59,7 @@ def color_mapper(airport, destinations):
         elif id in destinations:
             return "green"
         elif id in active_ap_ids:
-            return "lightblue"
+            return "black"
         else:
             return "lightgrey"
 
