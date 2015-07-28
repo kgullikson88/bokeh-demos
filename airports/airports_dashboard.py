@@ -1,3 +1,4 @@
+from __future__ import print_function
 from threading import Thread
 import requests
 from requests.exceptions import ConnectionError
@@ -12,7 +13,7 @@ from bokeh.embed import components
 from bokeh.resources import Resources
 from bokeh.templates import RESOURCES
 
-from flask import render_template
+from flask import render_template, request
 from flask_app import app
 
 
@@ -29,7 +30,7 @@ all_airports = AjaxDataSource(data_url='http://127.0.0.1:5050/data/all_aps',
 # create plot object and add all it's objects
 plot = figure(title="Flights", plot_width=1000, plot_height=500,
               tools="pan,box_zoom,box_select,tap,resize,reset")
-ui.create_airport_map(plot, ap_routes_source, all_airports, source_aps)
+ui.create_airport_map(plot, ap_routes_source, all_airports)
 
 # Let' add a new view to the airport dashboard so we can serve a customized
 # dashboard page and integrate some Frontend functionality
@@ -62,5 +63,8 @@ def newapplet():
     )
 
 if __name__ == "__main__":
+    print("To see the example go to: http://127.0.0.1:5050/dashboard")
+    print()
+    print()
     app.run(port=5050, debug=True)
 
