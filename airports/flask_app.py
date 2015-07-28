@@ -1,18 +1,10 @@
-from threading import Thread
-import requests
-from requests.exceptions import ConnectionError
-
 import pandas as pd
-from bokeh.plotting import figure, show
-from bokeh.io import output_file
-from bokeh.models.sources import ColumnDataSource, AjaxDataSource
 
 from flask import Flask, jsonify, request
 from bokeh.server.crossdomain import crossdomain
 
 import utils
-import ui
-from utils import routes, airports, create_output
+from utils import create_output
 
 
 # Prepare data
@@ -21,8 +13,6 @@ ap_routes = utils.get_routes(airport)
 _source_aps = create_output(airport['destinations'])
 _all_aps = create_output(utils.airports)
 
-df_isolated_ap = utils.airports[~utils.airports.id.isin(airport['destinations'].id.values)]
-_isolated_aps = create_output(df_isolated_ap)
 _active_aps = create_output(utils.active_airports)
 
 
@@ -37,11 +27,6 @@ def ap_routes_view():
 @crossdomain(origin="*", methods=['GET', 'POST'], headers=None)
 def source_aps_view():
     return jsonify(_source_aps)
-
-@app.route('/data/isolated_aps', methods=['GET', 'OPTIONS'])
-@crossdomain(origin="*", methods=['GET', 'POST'], headers=None)
-def isolated_aps_view():
-    return jsonify(_isolated_aps)
 
 @app.route('/data/all_aps', methods=['GET', 'OPTIONS'])
 @crossdomain(origin="*", methods=['GET', 'POST'], headers=None)
@@ -62,21 +47,15 @@ def update(newid):
 
     _all_aps = create_output(utils.airports)
 
-    df_source_ap = utils.airports[utils.airports.id.isin(airport['destinations'].id)]
-    _source_aps = create_output(df_source_ap)
-
-    # df_isolated_ap = airports[~airports.id.isin(airport['connections'].dest_ap_id.values)]
-    df_isolated_ap = utils.airports[~utils.airports.id.isin(airport['destinations'].id.values)]
-    _isolated_aps = create_output(df_isolated_ap)
-
     ap = airport['airport']
     ind = ap.index.values[0]
     dd = {k: v[ind] for k, v in dict(ap).items()}
 
     return jsonify(
-        {"msg": "OK",
+        {
          'connections': len(airport['destinations']),
-         'airport': dd}
+         'airport': dd
+        }
     )
 
 

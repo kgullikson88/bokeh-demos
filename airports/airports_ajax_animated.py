@@ -5,13 +5,11 @@ from __future__ import print_function
 
 import time
 from threading import Thread
-
 import utils
 import ui
 from bokeh.plotting import figure, show
 from bokeh.io import output_file
 from bokeh.models.sources import ColumnDataSource, AjaxDataSource
-
 from flask import jsonify
 from flask_app import app
 import walk_airports

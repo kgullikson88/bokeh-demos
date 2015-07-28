@@ -6,12 +6,9 @@
     airports with a smaller circle in light grey color. This airport is
     also connected to all it's destinations using a line glyph.
 """
-import pandas as pd
 from bokeh.plotting import figure, show
 from bokeh.io import output_file
 from bokeh.models.sources import ColumnDataSource, AjaxDataSource
-
-
 import utils
 import ui
 from utils import routes, airports

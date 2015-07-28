@@ -36,7 +36,9 @@ ui.create_airport_map(plot, ap_routes_source, all_airports)
 # dashboard page and integrate some Frontend functionality
 @app.route("/dashboard")
 def newapplet():
+    # retrieve the theme to be used..
     theme = request.args.get('theme', 'default')
+
     # preare all resources
     INLINE = Resources(mode="inline", minified=False,)
     templname = "dashboard.html"
@@ -63,6 +65,7 @@ def newapplet():
     )
 
 if __name__ == "__main__":
+    print()
     print("To see the example go to: http://127.0.0.1:5050/dashboard")
     print()
     print()
