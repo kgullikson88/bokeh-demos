@@ -1,0 +1,124 @@
+body{
+    background-color: #191919;
+    color: #CCCCCC;
+}
+
+.styled-select select {
+   background: transparent;
+   width: 268px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   border: 0;
+   border-radius: 0;
+   height: 34px;
+   -webkit-appearance: none;
+   }
+
+.styled-select {
+   width: 240px;
+   height: 34px;
+   overflow: hidden;
+   background: url(new_arrow.png) no-repeat right #ddd;
+   border: 1px solid #ccc;
+}
+
+.head_title h1{
+    padding-left: 600px;
+}
+
+#plot_wrapper {
+  width: 80%;
+}
+
+#plugins_wrapper {
+    font-family: Arial, Helvetica, sans-serif;
+  position: absolute;
+  top: 10px;
+  left: 700px;
+  right: 0px;
+}
+
+#plugins_wrapper.hidden {
+  display: none;
+}
+
+#plugins_wrapper .details_pointer {
+  display: inline-block;
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: -40px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 9px 40px 9px 0;
+  border-color: transparent #000 transparent transparent;
+}
+#plugins_wrapper .details_pointer:before{
+  display: inline-block;
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 2px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 8px 38px 8px 0;
+  border-color: transparent #EFF5EC transparent transparent;
+}
+div.details-content {
+  color: rgba(20, 20, 20, 0.86);
+  font-family: Helvetica, sans-serif;
+  text-align: left;
+  font-size: 1em;
+}
+
+div#details_panel{
+  /*border: 1px solid #000;*/
+  /*border-radius: 6px;*/
+  background: transparent;
+  /*background-color: #333333;*/
+  color: #CCCCCC;
+  width: 400px;
+  /*font-family: Arial, Helvetica, sans-serif;*/
+  text-align: left;
+  font-family: Helvetica, sans-serif;
+  font-size: 0.8em;
+  padding: 10px;
+}
+
+div#details_panel h3 {
+  font-size: 14px;
+  margin: 0;
+  margin-bottom: 12px;
+}
+
+div#details_panel.hidden {
+  display: none;
+}
+
+
+div.bk-tooltip {
+  position: absolute;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.6);
+  border-radius: 5px;
+  pointer-events: none;
+    color: rgba(20, 20, 20, 0.86);
+}
+
+td.bk-tooltip-row-label {
+  color: rgba(20, 20, 20, 0.86);
+  font-family: Helvetica, sans-serif;
+  text-align: left;
+    font-size: 0.8em;
+}
+
+td.bk-tooltip-row-value {
+  color: rgba(20, 20, 20, 0.86);
+  font-family: Helvetica, sans-serif;
+    font-size: 0.8em;
+    text-align: left;
+}
