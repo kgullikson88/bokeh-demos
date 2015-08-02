@@ -1,17 +1,9 @@
-import logging
 import os
-import warnings
 from collections import defaultdict
 
 import h5py
 import numpy as np
 import pandas as pd
-
-import Analyze_CCF
-from GenericSmooth import roundodd
-from HelperFunctions import mad, integral
-import CCF_Systematics
-import Fitters
 
 
 HOME = os.environ['HOME']
@@ -144,7 +136,7 @@ class Full_CCF_Interface(object):
                            'HET': '{}/School/Research/HET_data/Cross_correlations/CCF.hdf5'.format(HOME),
                            'CHIRON': '{}/School/Research/CHIRON_data/Cross_correlations/CCF.hdf5'.format(HOME),
                            'IGRINS': '{}/School/Research/IGRINS_data/Cross_correlations/CCF.hdf5'.format(HOME)}
-        self._interfaces = {inst: Analyze_CCF.CCF_Interface(self._ccf_files[inst]) for inst in self._ccf_files.keys()}
+        self._interfaces = {inst: CCF_Interface(self._ccf_files[inst]) for inst in self._ccf_files.keys()}
         return
 
     def list_stars(self, print2screen=False):

@@ -4,8 +4,6 @@ Bokeh app for analyzing cross-correlation function (CCF) data.
 
 import os
 from collections import OrderedDict
-import sys
-import time
 import logging
 
 from bokeh.models import ColumnDataSource, Plot, HoverTool
@@ -82,18 +80,15 @@ class CCF_App(VBox):
         return obj
 
     def set_defaults(self):
-        starnames = sorted(self._ccf_interface.list_stars())
-        observations = self._ccf_interface.get_observations(starnames[0])
-        observations = ['/'.join(obs) for obs in observations]
-        self.star = starnames[0]
-        self.inst_date = observations[0]
+        self.star = 'HIP 79199'
+        self.inst_date = 'CHIRON/2014-03-18'
 
 
     def make_star_input(self):
         starnames = sorted(self._ccf_interface.list_stars())
         self.star_select = Select(
             name='Star',
-            value=starnames[0],
+            value=self.star,
             options=starnames,
         )
 
