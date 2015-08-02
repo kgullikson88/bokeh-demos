@@ -1,0 +1,2 @@
+#! /bin/bash
+bokeh-server --script CCF_Analyzer.py --backend memory
