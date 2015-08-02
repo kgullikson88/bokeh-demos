@@ -19,7 +19,7 @@ from bokeh.io import hplot
 from HDF5_Helpers import Full_CCF_Interface
 
 logger = logging.getLogger()
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 # Set up a constant for the ccf interface
 ADDMODE = 'simple'
@@ -115,8 +115,8 @@ class CCF_App(VBox):
 
 
     def plot_ccf(self, name, T, x_range=None):
-
         # Load the ccf from the HDF5 file.
+        logging.debug('Plotting ccf name {}'.format(name))
         observation = self.inst_date
         i = observation.find('/')
         instrument = observation[:i]
@@ -243,6 +243,7 @@ class CCF_App(VBox):
         T = self.current_source.data['T'][idx]
         name = self.current_source.data['name'][idx]
         logging.debug('T = {}\nName = {}\n'.format(T, name))
+        self.ccf_plot = self.plot_ccf(name, T)
         self.set_children()
         curdoc().add(self)
 
