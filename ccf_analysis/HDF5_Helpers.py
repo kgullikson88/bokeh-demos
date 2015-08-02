@@ -13,6 +13,121 @@ from HelperFunctions import mad, integral
 import CCF_Systematics
 import Fitters
 
+class CCF_Interface(object):
+    """ Interface for an HDF5 file with my cross-correlation data in it.
+    """
+    def __init__(self, filename, vel=np.arange(-900, 900, 1)):
+        """ Initialize the interface with the given filename. All ccfs will be
+        interpolated onto the velocity grid given in the 'vel' keyword.
+        """
+        self.hdf5 = h5py.File(filename, 'r')
+        self.velocities = vel
+
+    def __getitem__(self, path):
+        return self.hdf5[path]
+
+    def list_stars(self, print2screen=False):
+        """
+        List the stars available in the HDF5 file, and the dates available for each
+        :return: A list of the stars
+        """
+        if print2screen:
+            for star in sorted(self.hdf5.keys()):
+                print(star)
+                for date in sorted(self.hdf5[star].keys()):
+                    print('\t{}'.format(date))
+        return sorted(self.hdf5.keys())
+
+
+    def list_dates(self, star, print2screen=False):
+        """
+        List the dates available for the given star
+        :param star: The name of the star
+        :return: A list of dates the star was observed
+        """
+        if print2screen:
+            for date in sorted(self.hdf5[star].keys()):
+                print(date)
+        return sorted(self.hdf5[star].keys())
+
+
+    def _compile_data(self, starname=None, date=None, addmode='simple', read_ccf=True):
+        """
+        This reads in all the datasets for the given star and date.
+
+        :param starname: the name of the star. Must be in self.hdf5
+        :param date: The date to search. Must be in self.hdf5[star]
+        :keyword addmode: The way the individual CCFs were added. Options are:
+                          - 'simple'
+                          - 'ml'
+                          - 'all'  (saves all addmodes)
+        :keyword read_ccf: Whether or not to read in the actual ccf, or just the metadata in 
+                           the dataset attributes.
+
+        :return: a pandas DataFrame with the columns:
+                  - star
+                  - date
+                  - temperature
+                  - log(g)
+                  - [Fe/H]
+                  - vsini
+                  - addmode
+                  - ccf_max
+                  - vel_max
+                  - ccf (if read_ccf == True)
+        """
+        if starname is None:
+            df_list = []
+            star_list = self.list_stars()
+            for star in star_list:
+                date_list = self.list_dates(star)
+                for date in date_list:
+                    df_list.append(self._compile_data(star, date, addmode=addmode))
+            return pd.concat(df_list, ignore_index=True)
+            
+        elif starname is not None and date is None:
+            df_list = []
+            date_list = self.list_dates(starname)
+            for date in date_list:
+                df_list.append(self._compile_data(starname, date, addmode=addmode))
+            return pd.concat(df_list, ignore_index=True)
+            
+        else:
+            datasets = self.hdf5[starname][date].keys()
+            data = defaultdict(list)
+            for ds_name, ds in self.hdf5[starname][date].iteritems():  # in datasets:
+                am = ds.attrs['addmode']
+                if addmode == 'all' or addmode == am:
+                    data['T'].append(ds.attrs['T'])
+                    data['logg'].append(ds.attrs['logg'])
+                    data['[Fe/H]'].append(ds.attrs['[Fe/H]'])
+                    data['vsini'].append(ds.attrs['vsini'])
+                    data['addmode'].append(am)
+                    data['name'].append(ds.name)
+                    try:
+                        data['ccf_max'].append(ds.attrs['ccf_max'])
+                        data['vel_max'].append(ds.attrs['vel_max'])
+                    except KeyError:
+                        vel, corr = ds.value
+                        idx = np.argmax(corr)
+                        data['ccf_max'].append(corr[idx])
+                        data['vel_max'].append(vel[idx])
+                        
+                    if read_ccf:
+                        v = ds.value
+                        vel, corr = v[0], v[1]
+                        fcn = spline(vel, corr)
+                        data['ccf'].append(fcn(self.velocities))
+
+            data['Star'] = [starname] * len(data['T'])
+            data['Date'] = [date] * len(data['T'])
+            df = pd.DataFrame(data=data)
+            return df
+
+
+
+
+
 
 
 class Full_CCF_Interface(object):
@@ -71,7 +186,7 @@ class Full_CCF_Interface(object):
         """ Load the ccf from the appropriate interface. Must give either name or every other parameter
 
         name: The full path in the HDF5 file to the dataset. This is given in the 'name' column of the DataFrame
-              returned by make_summary_df or get_ccfs
+              returned by make_summary_df
         """
         interface = self._interfaces[instrument]
         if name is not None:

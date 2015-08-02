@@ -271,7 +271,6 @@ class CCF_App(VBox):
         if key in self._df_cache:
             return self._df_cache[key]
 
-        #return self._ccf_interface.get_ccfs(instrument, starname, date, addmode=ADDMODE)
         df = self._ccf_interface.make_summary_df(instrument, starname, date, addmode=ADDMODE)
         return df.rename(columns={'[Fe/H]': 'feh'})
 
