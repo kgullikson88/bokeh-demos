@@ -62,6 +62,7 @@ class CCF_App(VBox):
         creating all objects (plots, datasources, etc)
         """
         # create layout widgets
+        logging.info('Creating CCF_App')
         obj = cls()
         obj.upper_row = HBox()
         obj.lower_row = HBox()

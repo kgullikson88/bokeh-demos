@@ -13,6 +13,9 @@ from HelperFunctions import mad, integral
 import CCF_Systematics
 import Fitters
 
+
+HOME = os.environ['HOME']
+
 class CCF_Interface(object):
     """ Interface for an HDF5 file with my cross-correlation data in it.
     """
@@ -137,10 +140,10 @@ class Full_CCF_Interface(object):
 
     def __init__(self):
         # Instance variables to hold the ccf interfaces
-        self._ccf_files = {'TS23': '{}/School/Research/McDonaldData/Cross_correlations/CCF.hdf5'.format(home),
-                           'HET': '{}/School/Research/HET_data/Cross_correlations/CCF.hdf5'.format(home),
-                           'CHIRON': '{}/School/Research/CHIRON_data/Cross_correlations/CCF.hdf5'.format(home),
-                           'IGRINS': '{}/School/Research/IGRINS_data/Cross_correlations/CCF.hdf5'.format(home)}
+        self._ccf_files = {'TS23': '{}/School/Research/McDonaldData/Cross_correlations/CCF.hdf5'.format(HOME),
+                           'HET': '{}/School/Research/HET_data/Cross_correlations/CCF.hdf5'.format(HOME),
+                           'CHIRON': '{}/School/Research/CHIRON_data/Cross_correlations/CCF.hdf5'.format(HOME),
+                           'IGRINS': '{}/School/Research/IGRINS_data/Cross_correlations/CCF.hdf5'.format(HOME)}
         self._interfaces = {inst: Analyze_CCF.CCF_Interface(self._ccf_files[inst]) for inst in self._ccf_files.keys()}
         return
 
