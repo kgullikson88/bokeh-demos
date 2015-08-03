@@ -49,7 +49,7 @@ class CCF_App(VBox):
 
     def __init__(self, *args, **kwargs):
         super(CCF_App, self).__init__(*args, **kwargs)
-        self._ccf_interface = Full_CCF_Interface()
+        self._ccf_interface = Full_CCF_Interface(cache=False)
         self._df_cache = {}
 
 

@@ -132,18 +132,16 @@ class Full_CCF_Interface(object):
     Interface to all of my cross-correlation functions in one class!
     """
 
-    def __init__(self):
+    def __init__(self, cache=False):
         # Instance variables to hold the ccf interfaces
-        #self._ccf_files = {'TS23': '{}/School/Research/McDonaldData/Cross_correlations/CCF.hdf5'.format(HOME),
-        #                   'HET': '{}/School/Research/HET_data/Cross_correlations/CCF.hdf5'.format(HOME),
-        #                   'CHIRON': '{}/School/Research/CHIRON_data/Cross_correlations/CCF.hdf5'.format(HOME),
-        #                   'IGRINS': '{}/School/Research/IGRINS_data/Cross_correlations/CCF.hdf5'.format(HOME)}
         self._ccf_files = {'TS23': 'data/TS23_data.h5',
                            'HET': 'data/HRS_data.h5',
-                           'CHIRON', 'data/CHIRON_data.h5',
+                           'CHIRON': 'data/CHIRON_data.h5',
                            'IGRINS': 'data/IGRINS_data.h5'}
         self._interfaces = {inst: CCF_Interface(self._ccf_files[inst]) for inst in self._ccf_files.keys()}
-        self._make_cache()
+        self._cache = None
+        if cache:
+            self._make_cache()
         return
 
     def list_stars(self, print2screen=False):
@@ -179,6 +177,10 @@ class Full_CCF_Interface(object):
     def _make_cache(self, addmode='simple'):
         """ Read through all the datasets in each CCF interface, pulling the metadata.
         """
+        if self._cache is not None:
+            logging.info('Cache already loaded! Not reloading!')
+            return
+
         logging.info('Reading HDF5 metadata for faster access later')
         dataframes = []
         for inst in self._interfaces.keys():
@@ -192,14 +194,14 @@ class Full_CCF_Interface(object):
 
 
     def make_summary_df(self, instrument, starname, date, addmode='simple', read_ccf=False):
-        cache = self._cache
-        data = cache.loc[(cache.Instrument == instrument) & (cache.Star == starname) & (cache.Date == date)]
+        if self._cache is not None:
+            cache = self._cache
+            data = cache.loc[(cache.Instrument == instrument) & (cache.Star == starname) & (cache.Date == date)]
+        else:
+            interface = self._interfaces[instrument]
+            data = interface._compile_data(starname, date, addmode=addmode, read_ccf=read_ccf)
+            data['Instrument'] = instrument
         return data 
-
-        #interface = self._interfaces[instrument]
-        #data = interface._compile_data(starname, date, addmode=addmode, read_ccf=read_ccf)
-        #data['Instrument'] = instrument
-        #return data
 
 
     def load_ccf(self, instrument, name=None, star=None, date=None, T=None, feh=None, logg=None, vsini=None):
