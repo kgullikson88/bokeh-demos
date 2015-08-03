@@ -14,7 +14,7 @@ from bokeh.server.utils.plugins import object_page
 from bokeh.models.widgets import HBox, VBox, VBoxForm, Select
 from bokeh.io import hplot
 
-from HDF5_Helpers import Full_CCF_Interface
+from HDF5_Interface import Full_CCF_Interface
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -125,8 +125,7 @@ class CCF_App(VBox):
             title_text_font_size="10pt",
             tools="pan,wheel_zoom,box_select,reset,save"
         )
-        p.line(vel, corr, size=2,
-               xlabel='Velocity', ylabel='CCF')
+        p.line(vel, corr, line_width=2)
         p.xaxis[0].axis_label = 'Velocity (km/s)'
         p.yaxis[0].axis_label = 'CCF Power'
 
@@ -171,7 +170,7 @@ class CCF_App(VBox):
         p = figure(
             title="CCF Parameters",
             plot_width=500, plot_height=400,
-            tools="pan,wheel_zoom,box_select,hover,reset",
+            tools="pan,wheel_zoom,box_select,reset",
             title_text_font_size="20pt",
         )
         p.circle("vsini", "feh",
