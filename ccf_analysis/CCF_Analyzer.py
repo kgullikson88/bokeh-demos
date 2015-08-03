@@ -46,11 +46,12 @@ class CCF_App(VBox):
     inst_date_select = Instance(Select)
     input_box = Instance(VBoxForm)
 
+    _ccf_interface = Full_CCF_Interface(cache=True)
+    _df_cache = {}
+
 
     def __init__(self, *args, **kwargs):
         super(CCF_App, self).__init__(*args, **kwargs)
-        self._ccf_interface = Full_CCF_Interface(cache=False)
-        self._df_cache = {}
 
 
     @classmethod
@@ -268,7 +269,10 @@ class CCF_App(VBox):
             return self._df_cache[key]
 
         df = self._ccf_interface.make_summary_df(instrument, starname, date, addmode=ADDMODE)
-        return df.rename(columns={'[Fe/H]': 'feh'})
+        df = df.rename(columns={'[Fe/H]': 'feh'})
+        self._df_cache[key] = df.copy()
+
+        return df
 
     @property 
     def selected_df(self):
