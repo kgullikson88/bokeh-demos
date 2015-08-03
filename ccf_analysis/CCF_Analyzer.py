@@ -87,9 +87,9 @@ class CCF_App(VBox):
     def make_star_input(self):
         starnames = sorted(self._ccf_interface.list_stars())
         self.star_select = Select(
-            name='Star',
+            name='Star identifier',
             value=self.star,
-            options=starnames,
+            options=starnames
         )
 
     def make_inst_date_input(self):
@@ -143,7 +143,7 @@ class CCF_App(VBox):
 
         p = figure(
             title="{} - {}".format(star, inst_date),
-            plot_width=1000, plot_height=400,
+            plot_width=800, plot_height=400,
             tools="pan,wheel_zoom,tap,hover,reset",
             title_text_font_size="20pt",
         )
