@@ -1,7 +1,6 @@
 import requests
 import subprocess
 
-DATA_URL = 'http://www.as.utexas.edu/~kgulliks/media/data/ccf_data.tar.gz'
 
 def download_file(url, outfilename):
     """
@@ -18,6 +17,10 @@ def download_file(url, outfilename):
                 f.flush()
     return
 
+DATA_URL = 'http://www.as.utexas.edu/~kgulliks/media/data/ccf_data.tar.gz'
 outfile = 'ccf_data.tar'
+print('Downloading data from server')
 download_file(DATA_URL, outfile)
+print('Un-packing data')
 subprocess.check_call(['tar', '-xvf', outfile])
+print('Done!')
