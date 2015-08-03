@@ -18,6 +18,6 @@ This tool runs through bokeh-server, so you can instantiate it with whatever you
 ./run_ccf_server
 ```
 
-The first thing it does is read in the HDF5 files with the CCF data, which will take about a minute. After that, the app should be responsive and update all plots within a second or so.
+The first thing it does is read in the HDF5 files with the CCF data, which will take about a minute. After that, the app should be responsive and update all plots within a second or so. Once it gets done with the data cache, you can open the app in your web browser by going to http://localhost:5006/bokeh/ccf/
 
 
